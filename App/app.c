@@ -4,6 +4,8 @@
 //
  
 #include <includes.h>
+#include <Param.h>
+#include <IOCon.h>
 
 INT16U led_stat=0;
 INT16U SW1_logic=1;
@@ -19,10 +21,10 @@ OS_STK Task_1_Stk[TASK_1_STK_SIZE];   /* Task stack */
 #define TASK_2_STK_SIZE   256
 OS_STK Task_2_Stk[TASK_2_STK_SIZE];   /* Task stack */
 
-#define TASK_1_STK_SIZE   256
+#define TASK_3_STK_SIZE   256
 OS_STK Task_3_Stk[TASK_3_STK_SIZE];   /* Task stack */
 
-#define TASK_2_STK_SIZE   256
+#define TASK_4_STK_SIZE   256
 OS_STK Task_4_Stk[TASK_4_STK_SIZE];   /* Task stack */
 
 static void Task_1(void *p_arg);      /* Task function */
@@ -37,12 +39,17 @@ CPU_INT16S  main (void)
   
   OSInit();
   BSP_Init();  
-  
+  IO_Init();
+
   OSTaskCreate(Task_1, (void *)0, (OS_STK *)&Task_1_Stk[0], TASK_1_PRIO);
   OSTaskCreate(Task_2, (void *)0, (OS_STK *)&Task_2_Stk[0], TASK_2_PRIO);
+  OSTaskCreate(Task_3, (void *)0, (OS_STK *)&Task_3_Stk[0], TASK_3_PRIO);
+  OSTaskCreate(Task_4, (void *)0, (OS_STK *)&Task_4_Stk[0], TASK_4_PRIO);
   
   OSTaskNameSet(TASK_1_PRIO,  (CPU_INT08U *)"Task 1", &err);
   OSTaskNameSet(TASK_2_PRIO,  (CPU_INT08U *)"Task 2", &err);
+  OSTaskNameSet(TASK_3_PRIO,  (CPU_INT08U *)"Task 3", &err);
+  OSTaskNameSet(TASK_4_PRIO,  (CPU_INT08U *)"Task 4", &err);
     
   OSStart();                     
 
