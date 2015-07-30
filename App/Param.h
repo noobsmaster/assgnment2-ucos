@@ -11,8 +11,7 @@
 #define    SW2_d		PORTBbits.RB7
 
 // Extern Variable
-extern unsigned int avgADCValue;
-extern int SW1;
-extern int SW2;
+int SW1;
+int SW2;
 
 #endif
