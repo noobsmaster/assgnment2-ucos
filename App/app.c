@@ -8,8 +8,10 @@
 INT16U led_stat=0;
 INT16U SW1_logic=1;
     
-#define TASK_1_PRIO       8
-#define TASK_2_PRIO       5
+#define TASK_1_PRIO       1
+#define TASK_2_PRIO       4
+#define TASK_3_PRIO       2
+#define TASK_4_PRIO       3
 
 #define TASK_1_STK_SIZE   256
 OS_STK Task_1_Stk[TASK_1_STK_SIZE];   /* Task stack */
@@ -17,15 +19,24 @@ OS_STK Task_1_Stk[TASK_1_STK_SIZE];   /* Task stack */
 #define TASK_2_STK_SIZE   256
 OS_STK Task_2_Stk[TASK_2_STK_SIZE];   /* Task stack */
 
+#define TASK_1_STK_SIZE   256
+OS_STK Task_3_Stk[TASK_3_STK_SIZE];   /* Task stack */
+
+#define TASK_2_STK_SIZE   256
+OS_STK Task_4_Stk[TASK_4_STK_SIZE];   /* Task stack */
+
 static void Task_1(void *p_arg);      /* Task function */
 static void Task_2(void *p_arg);      /* Task function */
+static void Task_3(void *p_arg);      /* Task function */
+static void Task_4(void *p_arg);      /* Task function */
 
 
 CPU_INT16S  main (void)
 {  
   CPU_INT08U err;
   
-  OSInit();  
+  OSInit();
+  BSP_Init();  
   
   OSTaskCreate(Task_1, (void *)0, (OS_STK *)&Task_1_Stk[0], TASK_1_PRIO);
   OSTaskCreate(Task_2, (void *)0, (OS_STK *)&Task_2_Stk[0], TASK_2_PRIO);
@@ -61,6 +72,7 @@ static void Task_1(void *p_arg) //task 1 = de-bouncing
 			SW2=1;
 		OSTimeDlyHMSM(0,0,0,20);
 	}
+	OSTimeDlyHMSM(0,0,0,5);
   }
 }
 
@@ -117,7 +129,7 @@ static void Task_4(void *p_arg)	//led 1 blinking timing
 		{
 			case(0):
 				LED1=0;
-				OSTaskSuspend();
+				OSTimeDlyHMSM(0,0,5,0);
 				break;
 			case(1):
 				LED1=~LED1;
